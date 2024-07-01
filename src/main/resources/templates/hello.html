@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Bank Account Statement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .header, .footer {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .account-details, .transaction-history, .summary {
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Bank Account Statement</h1>
+        <p>Statement Date: <span th:text="${statementDate}">2024-06-27</span></p>
+    </div>
+    <div class="account-details">
+        <h2>Account Details</h2>
+        <p>Account Holder: <span th:text="${accountHolderName}"></span></p>
+        <p>Account Number: <span th:text="${accountNumber}">1234567890</span></p>
+        <p>Account Type: <span th:text="${accountType}">Checking</span></p>
+    </div>
+    <div class="transaction-history">
+        <h2>Transaction History</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Balance</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="transaction : ${transactions}">
+                <td th:text="${transaction.date}">2024-06-01</td>
+                <td th:text="${transaction.description}">ATM Withdrawal</td>
+                <td th:text="${transaction.amount}">$100.00</td>
+                <td th:text="${transaction.balance}">$900.00</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="summary">
+        <h2>Account Summary</h2>
+        <p>Starting Balance: <span th:text="${startingBalance}">$1000.00</span></p>
+        <p>Total Deposits: <span th:text="${totalDeposits}">$500.00</span></p>
+        <p>Total Withdrawals: <span th:text="${totalWithdrawals}">$400.00</span></p>
+        <p>Ending Balance: <span th:text="${endingBalance}">$1100.00</span></p>
+    </div>
+    <div class="footer">
+        <p>Thank you for banking with us!</p>
+    </div>
+</div>
+</body>
+</html>
