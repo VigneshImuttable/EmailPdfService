@@ -8,7 +8,7 @@
             font-family: Arial, sans-serif;
         }
         .container {
-            width: 80%;
+            width: 100%;
             margin: 0 auto;
         }
         .header, .footer {
@@ -22,10 +22,8 @@
             width: 100%;
             border-collapse: collapse;
         }
-        table, th, td {
-
-        }
         th, td {
+            text-align: center;
             padding: 5px;
         }
         th {
@@ -35,10 +33,14 @@
 </head>
 <body>
 <div class="container">
-    <img src="path/to/your/static-image.png" alt="Your Logo" width="250px" height="50px">
-    <center><h2>SYNERGECH TECHNOLOGIES PVT LTD</h2></center>
-    <br>
-    <hr>
+    <table width="100%">
+        <tr>
+            <td width="10%"><img src="https://www.synergech.com/wp-content/uploads/2023/03/Asset-2@2x.png" alt="Your Logo" width="150px" height="30px"></img></td>
+    <td width="90%"><center><h2>SYNERGECH TECHNOLOGIES PVT LTD</h2></center></td>
+        </tr>
+    </table>
+    <br></br>
+    <hr></hr>
     <div class="header">
         <p>Statement Date: <span th:text="${statementDate}">2024-06-27</span></p>
     </div>
@@ -54,6 +56,7 @@
         <tr width="50%">
             <td style="text-align: left; padding-top: 20px;"><b>Account Number</b></td>
             <td style="text-align: right; padding-top: 20px;"><b>IFSC Code</b></td>
+        </tr>
         <tr width="50%">
             <td style="text-align: left;"><span th:text="${accountNumber}"></span></td>
             <td style="text-align: right;"><span th:text="${ifscCode}"></span></td>
@@ -67,15 +70,17 @@
             <td style="text-align: right;"><span th:text="${customerAddress}"></span></td>
         </tr>
     </table>
-    <div class="transaction-history">
+    <div  class="transaction-history">
+
         <h3>Transaction History</h3>
+        <p>Bank Statement from <span th:text="${fromDate}"></span> to <span th:text="${toDate}"></span> </p>
         <table style="border: 1px solid #ddd;">
             <thead>
             <tr>
                 <th>Transaction ID</th>
                 <th>From Account</th>
                 <th>To Account</th>
-                <th>Date</th>
+                <th width="100%">Date Of Transaction</th>
                 <th>Amount</th>
                 <th>Status</th>
             </tr>
@@ -85,7 +90,7 @@
                 <td th:text="${transaction.transId}"></td>
                 <td th:text="${transaction.fromAccountNumber}"></td>
                 <td th:text="${transaction.toAccountId}"></td>
-                <td th:text="${#dates.format(transaction.transDateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${(transaction.transDateTime)}"></td>
                 <td th:text="${transaction.amount}"></td>
                 <td th:text="${transaction.status}"></td>
             </tr>

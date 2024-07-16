@@ -2,11 +2,15 @@ package com.synergech.EmailPdfService.controllers;
 
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lowagie.text.DocumentException;
 import com.synergech.EmailPdfService.Dtos.AccountStatementResponseDTO;
+import com.synergech.EmailPdfService.services.EmailService;
 import com.synergech.EmailPdfService.services.HtmlBuilderService;
 import com.synergech.EmailPdfService.services.PdfService;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,15 +21,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 
 @Controller
+@Slf4j
 public class EmailPdfController {
 
 
     private final PdfService pdfService;
     private final HtmlBuilderService htmlBuilderService;
+    private final EmailService emailService;
 
-    public EmailPdfController(PdfService pdfService, HtmlBuilderService htmlBuilderService) {
+    private final ObjectMapper objectMapper;
+
+    public EmailPdfController(PdfService pdfService, HtmlBuilderService htmlBuilderService,EmailService emailService,ObjectMapper objectMapper) {
         this.pdfService = pdfService;
         this.htmlBuilderService = htmlBuilderService;
+        this.emailService=emailService;
+        this.objectMapper=objectMapper;
     }
 
     @GetMapping("/hello")
@@ -56,12 +66,31 @@ public class EmailPdfController {
         response.getOutputStream().write(pdfContent);
     }
 
-    @GetMapping("/index")
-    public void generatePdfAndEmail(@RequestBody AccountStatementResponseDTO dto){
+    @RequestMapping("/index/pdf")
+    @ResponseBody
+    public void generatePdfAndEmail(@RequestBody AccountStatementResponseDTO dto, HttpServletResponse response) throws IOException, DocumentException {
+        String htmlContent = htmlBuilderService.buildHelloHtml(dto);
+        byte[] pdfContent = pdfService.generatePdf(htmlContent);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=account-statement.pdf");
+        response.getOutputStream().write(pdfContent);
+    }
 
-
-
-
+    @KafkaListener(topics = "emailpdf", groupId = "AccountStatement")
+    public void generatePdfAndEmailThroughKafka(String message) throws DocumentException, IOException {
+        AccountStatementResponseDTO dto=null;
+        try {
+             dto = objectMapper.readValue(message, AccountStatementResponseDTO.class);
+            // Further processing with the DTO
+        } catch (IllegalArgumentException e) {
+            // Handle the exception appropriately
+            e.printStackTrace(); // Or log the exception or throw a custom exception
+        }
+        log.info("deserialized");
+        log.info(dto.toString());
+        String htmlContent = htmlBuilderService.buildHelloHtml(dto);
+        byte[] pdfContent = pdfService.generatePdf(htmlContent);
+        emailService.handleSendEmailEvent(dto.getEmail(),pdfContent);
     }
 }
 

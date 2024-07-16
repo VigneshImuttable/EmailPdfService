@@ -5,6 +5,10 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 @Service
 public class HtmlBuilderService {
     private final SpringTemplateEngine templateEngine;
@@ -23,10 +27,29 @@ public class HtmlBuilderService {
     }
 
     public String buildHelloHtml(AccountStatementResponseDTO dto) {
+        Context context = new Context();
+        context.setVariable("accountHolderName", dto.getAccountHolderName());
+        context.setVariable("accountNumber", dto.getAccountNumber());
+        context.setVariable("accountType", dto.getAccountType());
+        context.setVariable("branchName", dto.getBranchName());
+        context.setVariable("ifscCode", dto.getIfscCode());
+        context.setVariable("customerAddress", dto.getEmail());
+        context.setVariable("statementDate", new Date()); // or any specific date you want to set
+        context.setVariable("transactions", dto.getTransactions());
 
+        // If you have date ranges fromDate and toDate
+        context.setVariable("fromDate", formatDateString(dto.getFromDate()));
+        context.setVariable("toDate", formatDateString(dto.getToDate()));
 
-        return null;
+        return templateEngine.process("statement", context);
     }
+
+    private String formatDateString(String dateTime) {
+        LocalDateTime localDateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME);
+        return localDateTime.toLocalDate().toString();
+    }
+
+
 }
 
 

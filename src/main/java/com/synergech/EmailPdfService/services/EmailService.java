@@ -2,7 +2,10 @@ package com.synergech.EmailPdfService.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.synergech.EmailPdfService.Dtos.AccountStatementResponseDTO;
+import com.synergech.EmailPdfService.Dtos.EmailTemplate;
 import com.synergech.EmailPdfService.util.EmailUtil;
+import org.apache.kafka.common.utils.Bytes;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Authenticator;
@@ -13,26 +16,12 @@ import java.util.Properties;
 @Service
 public class EmailService {
 
-    private ObjectMapper objectMapper;
 
-    public EmailService(ObjectMapper objectMapper){
-        this.objectMapper = objectMapper;
-    }
+    public void handleSendEmailEvent(String toEmail, byte[] pdfBytes) {
 
-
-    public void handleSendEmailEvent(String message) {
-
-//         event;
-//        try {
-//            event = objectMapper.readValue(message, SendEmailEventDto.class);
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        String to = event.getTo();
-//        String body = event.getBody();
-//        String from = event.getFrom();
-//        String subject = event.getSubject();
+        String body = EmailTemplate.body;
+        String from = EmailTemplate.from;
+        String subject = EmailTemplate.subject;
 
         //Cofiguring the email
         Properties props = new Properties();
@@ -40,6 +29,7 @@ public class EmailService {
         props.put("mail.smtp.port", "587"); //TLS Port
         props.put("mail.smtp.auth", "true"); //enable authentication
         props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
 
         //create Authenticator object to pass in Session.getInstance argument
         Authenticator auth = new Authenticator() {
@@ -49,9 +39,6 @@ public class EmailService {
             }
         };
         Session session = Session.getInstance(props, auth);
-
-//        EmailUtil.sendEmail(session, to, subject, body);
-
-
+        EmailUtil.sendEmail(session, toEmail, subject, body,pdfBytes);
     }
 }

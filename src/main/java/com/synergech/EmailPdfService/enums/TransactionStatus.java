@@ -1,4 +1,4 @@
-package com.synergech.UserAccountService.transaction.domain.enums;
+package com.synergech.EmailPdfService.enums;
 
 public enum TransactionStatus {
 

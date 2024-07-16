@@ -1,11 +1,18 @@
 package com.synergech.EmailPdfService.models;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
+import org.springframework.transaction.TransactionStatus;
 
 import java.util.Date;
 
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TransactionFilterResponseDTO {
 
     private Long transId;
@@ -16,7 +23,7 @@ public class TransactionFilterResponseDTO {
 
     private String transDateTime;
 
-    private Double amount;
+    private double amount;
 
     private String status;
 

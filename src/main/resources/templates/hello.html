@@ -43,36 +43,36 @@
     <div class="account-details">
         <h2>Account Details</h2>
         <p>Account Holder: <span th:text="${accountHolderName}"></span></p>
-        <p>Account Number: <span th:text="${accountNumber}">1234567890</span></p>
-        <p>Account Type: <span th:text="${accountType}">Checking</span></p>
+        <p>Account Number: <span th:text="${accountNumber}"></span></p>
+        <p>Account Type: <span th:text="${accountType}"></span></p>
+        <p>Branch Name: <span th:text="${branchName}"></span></p>
+        <p>IFSC Code: <span th:text="${ifscCode}"></span></p>
+        <p>Customer Address: <span th:text="${customerAddress}"></span></p>
     </div>
     <div class="transaction-history">
         <h2>Transaction History</h2>
         <table>
             <thead>
             <tr>
+                <th>Transaction ID</th>
+                <th>From Account</th>
+                <th>To Account</th>
                 <th>Date</th>
-                <th>Description</th>
                 <th>Amount</th>
-                <th>Balance</th>
+                <th>Status</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="transaction : ${transactions}">
-                <td th:text="${transaction.date}">2024-06-01</td>
-                <td th:text="${transaction.description}">ATM Withdrawal</td>
-                <td th:text="${transaction.amount}">$100.00</td>
-                <td th:text="${transaction.balance}">$900.00</td>
+                <td th:text="${transaction.transId}"></td>
+                <td th:text="${transaction.fromAccountNumber}"></td>
+                <td th:text="${transaction.toAccountId}"></td>
+                <td th:text="${#dates.format(transaction.transDateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${transaction.amount}"></td>
+                <td th:text="${transaction.status}"></td>
             </tr>
             </tbody>
         </table>
-    </div>
-    <div class="summary">
-        <h2>Account Summary</h2>
-        <p>Starting Balance: <span th:text="${startingBalance}">$1000.00</span></p>
-        <p>Total Deposits: <span th:text="${totalDeposits}">$500.00</span></p>
-        <p>Total Withdrawals: <span th:text="${totalWithdrawals}">$400.00</span></p>
-        <p>Ending Balance: <span th:text="${endingBalance}">$1100.00</span></p>
     </div>
     <div class="footer">
         <p>Thank you for banking with us!</p>

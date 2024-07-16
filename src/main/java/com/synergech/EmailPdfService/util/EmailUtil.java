@@ -28,7 +28,7 @@ public class EmailUtil {
             msg.addHeader("format", "flowed");
             msg.addHeader("Content-Transfer-Encoding", "8bit");
 
-            msg.setFrom(new InternetAddress("account.info@bankofbarrota.com", "NoReply-JD"));
+            msg.setFrom(new InternetAddress("account.info@synergech.com", "NoReply-SYNERGECH-ADMIN"));
 
             msg.setReplyTo(InternetAddress.parse("no_reply@example.com", false));
 

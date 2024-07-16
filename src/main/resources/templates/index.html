@@ -23,11 +23,10 @@
             border-collapse: collapse;
         }
         table, th, td {
-            border: 1px solid #ddd;
+
         }
         th, td {
-            padding: 8px;
-            text-align: left;
+            padding: 5px;
         }
         th {
             background-color: #f2f2f2;
@@ -36,22 +35,41 @@
 </head>
 <body>
 <div class="container">
+    <img src="path/to/your/static-image.png" alt="Your Logo" width="250px" height="50px">
+    <center><h2>SYNERGECH TECHNOLOGIES PVT LTD</h2></center>
+    <br>
+    <hr>
     <div class="header">
-        <h1>Bank Account Statement</h1>
         <p>Statement Date: <span th:text="${statementDate}">2024-06-27</span></p>
     </div>
-    <div class="account-details">
-        <h2>Account Details</h2>
-        <p>Account Holder: <span th:text="${accountHolderName}"></span></p>
-        <p>Account Number: <span th:text="${accountNumber}"></span></p>
-        <p>Account Type: <span th:text="${accountType}"></span></p>
-        <p>Branch Name: <span th:text="${branchName}"></span></p>
-        <p>IFSC Code: <span th:text="${ifscCode}"></span></p>
-        <p>Customer Address: <span th:text="${customerAddress}"></span></p>
-    </div>
+    <table width="100%" class="account-details">
+        <tr width="50%">
+            <td style="text-align: left; padding-top: 20px;"><b>Account Holder Name</b></td>
+            <td style="text-align: right; padding-top: 20px;"><b>Branch Name</b></td>
+        </tr>
+        <tr width="50%">
+            <td style="text-align: left;"><span th:text="${accountHolderName}"></span></td>
+            <td style="text-align: right;"><span th:text="${branchName}"></span></td>
+        </tr>
+        <tr width="50%">
+            <td style="text-align: left; padding-top: 20px;"><b>Account Number</b></td>
+            <td style="text-align: right; padding-top: 20px;"><b>IFSC Code</b></td>
+        <tr width="50%">
+            <td style="text-align: left;"><span th:text="${accountNumber}"></span></td>
+            <td style="text-align: right;"><span th:text="${ifscCode}"></span></td>
+        </tr>
+        <tr width="50%">
+            <td style="text-align: left; padding-top: 20px;"><b>Account Type</b></td>
+            <td style="text-align: right; padding-top: 20px;"><b>Customer Address</b></td>
+        </tr>
+        <tr width="50%">
+            <td style="text-align: left;"><span th:text="${accountType}"></span></td>
+            <td style="text-align: right;"><span th:text="${customerAddress}"></span></td>
+        </tr>
+    </table>
     <div class="transaction-history">
-        <h2>Transaction History</h2>
-        <table>
+        <h3>Transaction History</h3>
+        <table style="border: 1px solid #ddd;">
             <thead>
             <tr>
                 <th>Transaction ID</th>
